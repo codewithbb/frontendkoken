@@ -144,3 +144,15 @@ h1 { margin: 0 0 6px 0; font-size: 2rem; }
 }
 .pill-ok { border-color: #bfe5c8; background: #effaf2; }
 .pill-bad { border-color: #ffb3b3; background: #ffecec; }
+
+.select { min-width: 180px; }
+
+.btn {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover { box-shadow: var(--shadow); }
