@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inloggen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <a class="back" href="index.html">← Terug</a>
+    <h1>Inloggen</h1>
+
+    <form id="form" class="panel" style="max-width:520px;">
+      <label>Email</label>
+      <input class="input" name="email" type="email" required />
+
+      <label>Wachtwoord</label>
+      <input class="input" name="password" type="password" required />
+
+      <button class="btn" type="submit">Login</button>
+
+      <div id="msg" class="alert hidden"></div>
+    </form>
+  </main>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:5000";
+    const form = document.getElementById("form");
+    const msg = document.getElementById("msg");
+
+    function show(text, ok=false){
+      msg.textContent = text;
+      msg.classList.remove("hidden");
+      msg.classList.toggle("alert-error", !ok);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.classList.add("hidden");
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        credentials: "include",
+        body: JSON.stringify(data)
+      });
+
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) return show(body.error || "Login mislukt");
+
+      show("Ingelogd!", true);
+      setTimeout(() => window.location.href = "index.html", 400);
+    });
+  </script>
+</body>
+</html>
