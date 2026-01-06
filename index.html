@@ -17,8 +17,32 @@
 
   <main class="container">
     <section class="toolbar">
-      <input id="search" class="input" type="search" placeholder="Zoek op titel of omschrijving…" />
+      <input id="search" class="input" type="search" placeholder="Zoek op titel, omschrijving…" />
+
+      <select id="cuisine" class="input select">
+        <option value="">Cuisine (alle)</option>
+      </select>
+
+      <select id="diet" class="input select">
+        <option value="">Dieet (alle)</option>
+      </select>
+
+      <select id="difficulty" class="input select">
+        <option value="">Moeilijkheid (alle)</option>
+        <option value="1">1 (beginner)</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 (gevorderd)</option>
+      </select>
+
+      <select id="tag" class="input select">
+        <option value="">Tag (alle)</option>
+      </select>
+
+      <button id="clear" class="btn">Reset</button>
     </section>
+
 
     <section id="grid" class="grid" aria-live="polite"></section>
 
