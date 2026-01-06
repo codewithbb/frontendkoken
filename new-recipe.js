@@ -24,6 +24,7 @@ form.addEventListener("submit", async (e) => {
   const payload = {
     title: fd.get("title"),
     description: fd.get("description"),
+    image_url: (fd.get("image_url") || "").trim() || null,
     servings: Number(fd.get("servings") || 1),
     prep_time_minutes: Number(fd.get("prep_time_minutes") || 0),
     cook_time_minutes: Number(fd.get("cook_time_minutes") || 0),

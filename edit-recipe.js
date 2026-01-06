@@ -38,18 +38,17 @@ async function loadRecipeIntoForm(recipeId) {
   form.diet.value = r.diet ?? "";
   form.difficulty.value = r.difficulty ?? "";
   form.voice_summary.value = r.voice_summary ?? "";
+  form.image_url.value = r.image_url ?? "";
   form.is_public.checked = !!r.is_public;
 
-  // ingredients: objects -> lines
   const ingLines = (r.ingredients || []).map(i => typeof i === "string" ? i : i.line);
   form.ingredients.value = ingLines.join("\n");
 
   const stepLines = (r.steps || []).map(s => typeof s === "string" ? s : s.instruction);
   form.steps.value = stepLines.join("\n");
 
-  // tags: je detail endpoint geeft nog geen tags; voor nu laat je dit leeg
-  // (we kunnen later tags ook meegeven in detail endpoint)
-  form.tags.value = "";
+  // ✅ tags vullen
+  form.tags.value = Array.isArray(r.tags) ? r.tags.join(", ") : "";
 }
 
 async function updateRecipe(recipeId, payload) {
@@ -77,6 +76,7 @@ form.addEventListener("submit", async (e) => {
   const payload = {
     title: fd.get("title"),
     description: fd.get("description"),
+    image_url: (fd.get("image_url") || "").trim() || null,
     servings: Number(fd.get("servings") || 1),
     prep_time_minutes: Number(fd.get("prep_time_minutes") || 0),
     cook_time_minutes: Number(fd.get("cook_time_minutes") || 0),
