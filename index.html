@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recepten | Overzicht</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div>
+      <h1>Recepten</h1>
+      <p class="muted">Bekijk alle beschikbare recepten en doe inspiratie op.</p>
+    </div>
+    <div class="pill" id="apiStatus">API: …</div>
+  </header>
+
+  <main class="container">
+    <section class="toolbar">
+      <input id="search" class="input" type="search" placeholder="Zoek op titel of omschrijving…" />
+    </section>
+
+    <section id="grid" class="grid" aria-live="polite"></section>
+
+    <div id="error" class="alert alert-error hidden"></div>
+    <div id="empty" class="alert hidden">Geen recepten gevonden.</div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

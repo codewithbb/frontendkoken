@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recept | Details</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div>
+      <a class="back" href="index.html">← Terug naar overzicht</a>
+      <h1 id="title">Recept laden…</h1>
+      <p id="description" class="muted"></p>
+      <div id="meta" class="meta"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel" id="voicePanel">
+      <div class="panel-title">Voice / korte samenvatting</div>
+      <p id="voiceSummary" class="muted">—</p>
+    </section>
+
+    <section class="layout-2">
+      <section class="panel">
+        <div class="panel-title">Ingrediënten</div>
+        <ul id="ingredients" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Bereiding</div>
+        <ol id="steps" class="steps"></ol>
+      </section>
+    </section>
+
+    <div id="error" class="alert alert-error hidden"></div>
+  </main>
+
+  <script src="recipe.js"></script>
+</body>
+</html>
