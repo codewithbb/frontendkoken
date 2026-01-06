@@ -9,6 +9,11 @@ const errorBox = document.getElementById("error");
 const voiceSummaryEl = document.getElementById("voiceSummary");
 const voicePanel = document.getElementById("voicePanel");
 
+async function getSession() {
+  const res = await fetch(`${API_BASE}/auth/session`, { credentials: "include" });
+  return res.ok ? res.json() : { logged_in: false, user: null };
+}
+
 function showError(message) {
   errorBox.textContent = message;
   errorBox.classList.remove("hidden");
@@ -89,6 +94,36 @@ async function loadRecipe() {
       throw new Error(`API error: ${res.status}`);
     }
     const r = await res.json();
+
+    const sess = await getSession();
+    const ownerActions = document.getElementById("ownerActions");
+    const editBtn = document.getElementById("editBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
+
+    if (sess.logged_in && r.owner_user_id && sess.user?.id === r.owner_user_id) {
+      ownerActions.classList.remove("hidden");
+
+      editBtn.href = `edit-recipe.html?id=${encodeURIComponent(r.id)}`;
+
+      deleteBtn.onclick = async () => {
+        if (!confirm("Weet je zeker dat je dit recept wilt verwijderen?")) return;
+
+        const delRes = await fetch(`${API_BASE}/recipes/${encodeURIComponent(r.id)}`, {
+          method: "DELETE",
+          credentials: "include"
+        });
+
+        const body = await delRes.json().catch(() => ({}));
+        if (!delRes.ok) {
+          alert(body.error || "Verwijderen mislukt.");
+          return;
+        }
+        window.location.href = "index.html";
+      };
+    } else {
+      ownerActions.classList.add("hidden");
+    }
+
 
     titleEl.textContent = r.title ?? "Recept";
     descEl.textContent = r.description ?? "";

@@ -164,3 +164,7 @@ h1 { margin: 0 0 6px 0; font-size: 2rem; }
 }
 label { display:block; font-weight: 600; margin: 10px 0 6px; }
 textarea.input { resize: vertical; }
+
+.owner-actions { margin-top: 12px; display: flex; gap: 10px; }
+.btn.danger { border-color: #ffb3b3; background: #ffecec; }
+.btn.danger:hover { box-shadow: 0 10px 30px rgba(0,0,0,.06); }
