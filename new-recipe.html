@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nieuw recept</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <a class="back" href="index.html">← Terug</a>
+    <h1>Nieuw recept toevoegen</h1>
+
+    <form id="form" class="panel" style="max-width:820px;">
+      <div class="grid-2">
+        <div>
+          <label>Titel</label>
+          <input class="input" name="title" required />
+        </div>
+        <div>
+          <label>Moeilijkheid (1-5)</label>
+          <select class="input select" name="difficulty">
+            <option value="">(optioneel)</option>
+            <option value="1">1 (beginner)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Omschrijving</label>
+      <textarea class="input" name="description" rows="3" required></textarea>
+
+      <div class="grid-3">
+        <div>
+          <label>Porties</label>
+          <input class="input" name="servings" type="number" min="1" value="2" />
+        </div>
+        <div>
+          <label>Prep (min)</label>
+          <input class="input" name="prep_time_minutes" type="number" min="0" value="10" />
+        </div>
+        <div>
+          <label>Kook (min)</label>
+          <input class="input" name="cook_time_minutes" type="number" min="0" value="15" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>Cuisine</label>
+          <input class="input" name="cuisine" placeholder="bijv. Italiaans" />
+        </div>
+        <div>
+          <label>Dieet</label>
+          <input class="input" name="diet" placeholder="bijv. Vegetarisch" />
+        </div>
+      </div>
+
+      <label>Voice summary (optioneel)</label>
+      <textarea class="input" name="voice_summary" rows="2" placeholder="Korte samenvatting om voor te lezen"></textarea>
+
+      <label>Ingrediënten (1 per regel)</label>
+      <textarea class="input" name="ingredients" rows="6" placeholder="300 g pasta&#10;1 ui&#10;..."></textarea>
+
+      <label>Stappen (1 per regel)</label>
+      <textarea class="input" name="steps" rows="7" placeholder="Snipper de ui&#10;Bak het gehakt&#10;..."></textarea>
+
+      <label>Tags (komma-gescheiden)</label>
+      <input class="input" name="tags" placeholder="snel, beginners, budget" />
+
+      <label style="display:flex; gap:10px; align-items:center; margin-top:8px;">
+        <input type="checkbox" name="is_public" checked />
+        Publiek zichtbaar
+      </label>
+
+      <button class="btn" type="submit">Opslaan</button>
+      <div id="msg" class="alert hidden"></div>
+    </form>
+  </main>
+
+  <script src="new-recipe.js"></script>
+</body>
+</html>
