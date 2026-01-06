@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mijn recepten</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div>
+      <a class="back" href="index.html">← Terug naar overzicht</a>
+      <h1>Mijn recepten</h1>
+      <p class="muted">Hier zie je al je recepten (publiek en privé).</p>
+    </div>
+
+    <div style="display:flex; gap:10px; align-items:center;">
+      <a class="btn" href="new-recipe.html">+ Nieuw recept</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="error" class="alert alert-error hidden"></div>
+    <div id="empty" class="alert hidden">Je hebt nog geen recepten.</div>
+  </main>
+
+  <script src="my-recipes.js"></script>
+</body>
+</html>
