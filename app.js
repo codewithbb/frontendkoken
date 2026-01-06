@@ -12,6 +12,9 @@ const difficultySel = document.getElementById("difficulty");
 const tagSel = document.getElementById("tag");
 const clearBtn = document.getElementById("clear");
 
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=60";
+
 function setApiStatus(ok) {
   apiStatus.textContent = ok ? "API: verbonden" : "API: niet bereikbaar";
   apiStatus.classList.toggle("pill-ok", ok);
@@ -34,30 +37,38 @@ function escapeHtml(str) {
 }
 
 function recipeCard(r) {
+  const img = r.image_url ? r.image_url : FALLBACK_IMG;
+
   const title = escapeHtml(r.title ?? "");
   const desc = escapeHtml(r.description ?? "");
-  const cuisine = r.cuisine ? escapeHtml(r.cuisine) : "";
-  const diet = r.diet ? escapeHtml(r.diet) : "";
-  const diff = r.difficulty ? `★ ${r.difficulty}/5` : "";
+
+  const tags = [
+    r.cuisine ? `<span class="tag">${escapeHtml(r.cuisine)}</span>` : "",
+    r.diet ? `<span class="tag">${escapeHtml(r.diet)}</span>` : ""
+  ].filter(Boolean).join("");
 
   const metaParts = [
     r.servings ? `Voor ${r.servings}` : null,
     (r.prep_time_minutes != null) ? `Prep ${r.prep_time_minutes}m` : null,
     (r.cook_time_minutes != null) ? `Kook ${r.cook_time_minutes}m` : null,
-    diff || null
+    r.difficulty ? `★ ${r.difficulty}/5` : null
   ].filter(Boolean);
-
-  const tags = [cuisine, diet].filter(Boolean)
-    .map(t => `<span class="tag">${t}</span>`).join("");
 
   return `
     <a class="card" href="recipe.html?id=${encodeURIComponent(r.id)}">
-      <div class="card-top">
-        <h2 class="card-title">${title}</h2>
-        ${tags ? `<div class="tagrow">${tags}</div>` : ""}
+      <div class="card-media">
+        <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" />
       </div>
-      <p class="card-desc">${desc}</p>
-      <div class="card-meta">${metaParts.join(" • ")}</div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <h2 class="card-title">${title}</h2>
+          ${tags ? `<div class="tagrow">${tags}</div>` : ""}
+        </div>
+
+        <p class="card-desc">${desc}</p>
+        <div class="card-meta">${metaParts.join(" • ")}</div>
+      </div>
     </a>
   `;
 }
@@ -93,7 +104,6 @@ async function loadFilters() {
     if (!res.ok) throw new Error(`filters: ${res.status}`);
     const data = await res.json();
 
-    // vul cuisine
     data.cuisines.forEach(c => {
       const opt = document.createElement("option");
       opt.value = c;
@@ -101,7 +111,6 @@ async function loadFilters() {
       cuisineSel.appendChild(opt);
     });
 
-    // vul diet
     data.diets.forEach(d => {
       const opt = document.createElement("option");
       opt.value = d;
@@ -109,7 +118,6 @@ async function loadFilters() {
       dietSel.appendChild(opt);
     });
 
-    // vul tags
     data.tags.forEach(t => {
       const opt = document.createElement("option");
       opt.value = t;
@@ -117,7 +125,6 @@ async function loadFilters() {
       tagSel.appendChild(opt);
     });
   } catch (err) {
-    // niet fatal; filters kunnen leeg blijven
     console.warn("Kon filters niet laden:", err.message);
   }
 }
@@ -143,7 +150,6 @@ async function loadRecipes() {
   }
 }
 
-// events
 searchInput.addEventListener("input", scheduleLoad);
 [cuisineSel, dietSel, difficultySel, tagSel].forEach(sel => sel.addEventListener("change", loadRecipes));
 
@@ -156,5 +162,4 @@ clearBtn.addEventListener("click", () => {
   loadRecipes();
 });
 
-// init
 loadFilters().then(loadRecipes);

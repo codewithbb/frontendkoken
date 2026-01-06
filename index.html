@@ -3,55 +3,91 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Recepten | Overzicht</title>
+  <title>CookingwithBB | Recepten</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <header class="container header">
-    <div>
-      <h1>Recepten</h1>
-      <p class="muted">Bekijk alle beschikbare recepten en doe inspiratie op.</p>
+<body class="theme-light">
+
+  <!-- Topbar (zoals een “site header”) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">🍳</span>
+        <span class="brand-name">CookingwithBB</span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav-link active" href="index.html">Recepten</a>
+        <a class="nav-link" href="my-recipes.html">Mijn recepten</a>
+        <a class="nav-link" href="new-recipe.html">Nieuw recept</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <span class="pill" id="apiStatus">API: …</span>
+        <a class="btn ghost" href="login.html">Login</a>
+        <a class="btn primary" href="register.html">Account</a>
+      </div>
     </div>
-  <div style="display:flex; gap:10px; align-items:center;">
-    <span class="pill" id="apiStatus">API: …</span>
-
-    <a class="btn" href="new-recipe.html">+ Nieuw recept</a>
-    <a class="btn" href="my-recipes.html">Mijn recepten</a>
-
-    <a class="btn" href="login.html">Login</a>
-    <a class="btn" href="register.html">Register</a>
-  </div>
-
   </header>
 
+  <!-- Hero (inspiratie: “Waar heb jij zin in?”) -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>Waar heb jij zin in?</h1>
+        <p class="muted">
+          Zoek een recept, filter op keuken/soort, of kies een thema.
+        </p>
+
+        <!-- Snelle “chips”/thema’s (inspiratie: populaire suggesties) -->
+        <div class="chips">
+          <button class="chip" data-q="pasta" type="button">Pasta</button>
+          <button class="chip" data-q="curry" type="button">Curry</button>
+          <button class="chip" data-q="budget" type="button">Budget</button>
+          <button class="chip" data-q="vegetarisch" type="button">Vegetarisch</button>
+          <button class="chip" data-q="snel" type="button">Snel</button>
+        </div>
+      </div>
+
+      <!-- Zoek + filters “boven de fold” -->
+      <div class="hero-search panel">
+          <div class="filterbar">
+
+          <input id="search" class="input" type="search" placeholder="Zoek op titel, omschrijving…" />
+
+          <select id="cuisine" class="input select">
+            <option value="">Cuisine (alle)</option>
+          </select>
+
+          <select id="diet" class="input select">
+            <option value="">Dieet (alle)</option>
+          </select>
+
+          <select id="difficulty" class="input select">
+            <option value="">Moeilijkheid (alle)</option>
+            <option value="1">1 (beginner)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (gevorderd)</option>
+          </select>
+
+          <select id="tag" class="input select">
+            <option value="">Tag (alle)</option>
+          </select>
+
+          <button id="clear" class="btn" type="button">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content: “Nieuwste recepten” -->
   <main class="container">
-    <section class="toolbar">
-      <input id="search" class="input" type="search" placeholder="Zoek op titel, omschrijving…" />
-
-      <select id="cuisine" class="input select">
-        <option value="">Cuisine (alle)</option>
-      </select>
-
-      <select id="diet" class="input select">
-        <option value="">Dieet (alle)</option>
-      </select>
-
-      <select id="difficulty" class="input select">
-        <option value="">Moeilijkheid (alle)</option>
-        <option value="1">1 (beginner)</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5 (gevorderd)</option>
-      </select>
-
-      <select id="tag" class="input select">
-        <option value="">Tag (alle)</option>
-      </select>
-
-      <button id="clear" class="btn">Reset</button>
-    </section>
-
+    <div class="section-head">
+      <h2>Nieuwste recepten</h2>
+      <p class="muted">Klik op een recept om de details te bekijken.</p>
+    </div>
 
     <section id="grid" class="grid" aria-live="polite"></section>
 
@@ -59,6 +95,26 @@
     <div id="empty" class="alert hidden">Geen recepten gevonden.</div>
   </main>
 
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="muted">© CookingwithBB</div>
+      <div class="muted">Gemaakt met Flask + Azure SQL</div>
+    </div>
+  </footer>
+
   <script src="app.js"></script>
+
+  <!-- mini script: chips vullen de zoekbalk -->
+  <script>
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const q = btn.getAttribute("data-q") || "";
+        const search = document.getElementById("search");
+        search.value = q;
+        search.dispatchEvent(new Event("input"));
+        window.scrollTo({ top: document.querySelector("#grid").offsetTop - 40, behavior: "smooth" });
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 const API_BASE = "http://127.0.0.1:5000";
 
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=60";
+
 const titleEl = document.getElementById("title");
 const descEl = document.getElementById("description");
 const metaEl = document.getElementById("meta");
@@ -8,6 +11,7 @@ const stepsEl = document.getElementById("steps");
 const errorBox = document.getElementById("error");
 const voiceSummaryEl = document.getElementById("voiceSummary");
 const voicePanel = document.getElementById("voicePanel");
+const heroImg = document.getElementById("heroImage");
 
 async function getSession() {
   const res = await fetch(`${API_BASE}/auth/session`, { credentials: "include" });
@@ -50,7 +54,6 @@ function renderIngredients(ingredients) {
     return;
   }
 
-  // jouw API kan ingredients als objects (line/sort_order) geven
   ingredients.forEach(i => {
     const text = (typeof i === "string") ? i : (i.line ?? "");
     const li = document.createElement("li");
@@ -88,13 +91,23 @@ async function loadRecipe() {
   }
 
   try {
-    const res = await fetch(`${API_BASE}/recipes/${encodeURIComponent(id)}`);
+    const res = await fetch(`${API_BASE}/recipes/${encodeURIComponent(id)}`, {
+      credentials: "include" // ✅ zodat owner private kan zien
+    });
+
     if (!res.ok) {
       if (res.status === 404) throw new Error("Recept niet gevonden.");
       throw new Error(`API error: ${res.status}`);
     }
+
     const r = await res.json();
 
+    // hero image
+    heroImg.src = r.image_url || FALLBACK_IMG;
+    heroImg.onerror = () => { heroImg.src = FALLBACK_IMG; };
+    heroImg.alt = r.title || "Recept foto";
+
+    // owner actions
     const sess = await getSession();
     const ownerActions = document.getElementById("ownerActions");
     const editBtn = document.getElementById("editBtn");
@@ -123,7 +136,6 @@ async function loadRecipe() {
     } else {
       ownerActions.classList.add("hidden");
     }
-
 
     titleEl.textContent = r.title ?? "Recept";
     descEl.textContent = r.description ?? "";

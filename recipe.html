@@ -5,24 +5,29 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Recept | Details</title>
   <link rel="stylesheet" href="styles.css" />
-  <div id="ownerActions" class="owner-actions hidden">
-  <a class="btn" id="editBtn" href="#">Bewerken</a>
-  <button class="btn danger" id="deleteBtn" type="button">Verwijderen</button>
-</div>
-
 </head>
-<body>
+
+<body class="theme-light">
   <header class="container header">
     <div>
       <a class="back" href="index.html">← Terug naar overzicht</a>
       <h1 id="title">Recept laden…</h1>
       <p id="description" class="muted"></p>
       <div id="meta" class="meta"></div>
+
+      <div id="ownerActions" class="owner-actions hidden">
+        <a class="btn" id="editBtn" href="#">Bewerken</a>
+        <button class="btn danger" id="deleteBtn" type="button">Verwijderen</button>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <section class="panel" id="voicePanel">
+    <div class="hero-image">
+      <img id="heroImage" alt="Recept foto" />
+    </div>
+
+    <section class="panel" id="voicePanel" style="margin-top:16px;">
       <div class="panel-title">Voice / korte samenvatting</div>
       <p id="voiceSummary" class="muted">—</p>
     </section>
